@@ -45,10 +45,15 @@ export async function generateMetadata({
     imageList = typeof post.images === 'string' ? [post.images] : post.images
   }
   const ogImages = imageList.map((img) => {
+    if (typeof img !== 'string') {
+      console.error('Non-string element in imageList:', img);
+      return null;
+    }
+  
     return {
       url: img.includes('http') ? img : siteMetadata.siteUrl + img,
-    }
-  })
+    };
+  }).filter(Boolean);
 
   return {
     title: post.title,
